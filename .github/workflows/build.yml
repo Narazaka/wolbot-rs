@@ -1,4 +1,4 @@
-name: Rust
+name: Build for Linux
 
 on:
   push:
@@ -15,12 +15,18 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        target:
+          - x86_64-unknown-linux-gnu
+          - aarch64-unknown-linux-gnu
+
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --verbose
+      run: cargo build --verbose --target ${{ matrix.target }}
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.2
       with:
         name: wolbot
-        path: target/release/wolbot
+        path: ${{ github.workspace }}/target/${{ matrix.target }}/release/wolbot
