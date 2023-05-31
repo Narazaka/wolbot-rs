@@ -1,0 +1,9 @@
+{
+    "token": "abcdefghijklmnopqrstuvwxyz",
+    "channels": [
+        {
+            "channelId": "000000000000000000",
+            "mac": ""
+        }
+    ]
+}
