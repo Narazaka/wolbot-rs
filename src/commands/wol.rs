@@ -8,7 +8,7 @@ use crate::config::read;
 #[description = "Wake on LAN"]
 async fn wol(ctx: &Context, msg: &Message) -> CommandResult {
     let config = read("config.json").expect("cannot read config.json");
-    if let Some(channel) = config.get_channel(msg.channel_id.0) {
+    if let Some(channel) = config.get_channel(msg.channel_id.get()) {
         let wol = wakey::WolPacket::from_string(&channel.mac, ':')?;
         if wol.send_magic().is_ok() {
             msg.channel_id.say(&ctx.http, "Waking up...").await?;

@@ -6,6 +6,7 @@ use commands::help::*;
 use commands::wol::*;
 use handler::*;
 
+use serenity::framework::standard::Configuration;
 use serenity::framework::standard::macros::group;
 use serenity::framework::StandardFramework;
 use serenity::prelude::Client;
@@ -19,17 +20,15 @@ struct General;
 async fn main() {
     let config = config::read("config.json").expect("cannot read config.json");
     // コマンド系はすべて大文字にする
-    let framework = StandardFramework::new()
-        .configure(|c| c.prefix("!"))
-        .help(&HELP)
-        .group(&GENERAL_GROUP);
+    let framework = StandardFramework::new();
+    framework.configure(Configuration::new().prefix("!"));
 
     let mut client = Client::builder(
         &config.token,
         GatewayIntents::GUILDS | GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT,
     )
     .event_handler(Handler)
-    .framework(framework)
+    .framework(framework.help(&HELP).group(&GENERAL_GROUP))
     .await
     .expect("Err creating client");
 
